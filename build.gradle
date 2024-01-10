@@ -27,7 +27,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	//JdbcTemplate
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	//implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	//MyBatis 추가
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+	//JPA, 스프링 데이터 JPA 추가
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+
 	//H2 database
 	runtimeOnly 'com.h2database:h2'
 

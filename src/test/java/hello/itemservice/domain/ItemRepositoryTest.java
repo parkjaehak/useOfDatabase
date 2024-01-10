@@ -9,30 +9,40 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * 1. @Transactional 애노테이션은 메서드에 붙여도 되고, 클래스에 붙여도 된다.
+ *    클래스에 붙이면 외부에서 호출가능한 public 메서드가 AOP 적용 대상이 된다.
+ *
+ * 2. @Transactional이 테스트에 있으면 스프링은 테스트를 트랜잭션 안에서 실행하고, 테스트가 끝나면 트랜잭션을 자동으로 롤백시켜 버린다.
+ */
+@Transactional
 @SpringBootTest
 class ItemRepositoryTest {
 
+    // ItemRepository에 @Repository가 붙어있다면 스프링 부트에 있는 예외 변환 AOP를 통해 프록시가 빈으로 등록
+    // @Autowired로 불러온 ItemRepository 빈 객체가 프록시 객체
     @Autowired
     ItemRepository itemRepository;
 
-    @Autowired
+    /*@Autowired
     PlatformTransactionManager transactionManager;
-
     TransactionStatus status;
 
     @BeforeEach
     void beforeEach() {
         // transaction start
         status = transactionManager.getTransaction(new DefaultTransactionDefinition());
-    }
+    }*/
 
     @AfterEach
     void afterEach() {
@@ -41,7 +51,7 @@ class ItemRepositoryTest {
             ((MemoryItemRepository) itemRepository).clearStore();
         }
         // trasaction rollback
-        transactionManager.rollback(status);
+        //transactionManager.rollback(status);
     }
 
     @Test
